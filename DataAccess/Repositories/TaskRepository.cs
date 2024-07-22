@@ -2,7 +2,7 @@ using DataAccess.Repositories.Interfaces;
 using Task = DataAccess.Entities.Task;
 namespace DataAccess.Repositories;
 
-public class TaskRepository: ITaskRepository, IRepository
+public class TaskRepository: ITaskRepository
 {
     private readonly AppDbContext _dbContext;
 

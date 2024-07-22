@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Status");
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Task", b =>
@@ -68,7 +68,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Task");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Task", b =>
