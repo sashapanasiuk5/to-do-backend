@@ -11,16 +11,13 @@ namespace Core.Actions.Task.Update;
 using DataAccess.Entities;
 public class UpdateTaskCommandHandler: IRequestHandler<UpdateTaskCommand, Result<Unit>>
 {
-    private readonly IStatusRepository _statusRepository;
     private readonly ITaskRepository _taskRepository;
     private readonly IDtoConverter<CreateOrModifyTaskDto, Task> _taskDtoConverter;
 
     public UpdateTaskCommandHandler(
-        IStatusRepository statusRepository,
         ITaskRepository taskRepository,
         IDtoConverter<CreateOrModifyTaskDto, Task> taskDtoConverter)
     {
-        _statusRepository = statusRepository;
         _taskRepository = taskRepository;
         _taskDtoConverter = taskDtoConverter;
     }

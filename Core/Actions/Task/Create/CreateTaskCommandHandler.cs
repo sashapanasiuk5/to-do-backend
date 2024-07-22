@@ -8,15 +8,12 @@ namespace Core.Actions.Task.Create;
 using DataAccess.Entities;
 public class CreateTaskCommandHandler: IRequestHandler<CreateTaskCommand, Result<Unit>>
 {
-    private readonly IStatusRepository _statusRepository;
     private readonly ITaskRepository _taskRepository;
     private readonly IDtoConverter<CreateOrModifyTaskDto, Task> _taskDtoConverter;
     public CreateTaskCommandHandler(
-        IStatusRepository statusRepository,
         ITaskRepository taskRepository,
         IDtoConverter<CreateOrModifyTaskDto, Task> taskDtoConverter)
     {
-        _statusRepository = statusRepository;
         _taskRepository = taskRepository;
         _taskDtoConverter = taskDtoConverter;
     }
