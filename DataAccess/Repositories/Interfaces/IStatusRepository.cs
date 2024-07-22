@@ -1,6 +1,6 @@
 using DataAccess.Entities;
 
-namespace Core.Interfaces.Repositories;
+namespace DataAccess.Repositories.Interfaces;
 
 public interface IStatusRepository
 {
