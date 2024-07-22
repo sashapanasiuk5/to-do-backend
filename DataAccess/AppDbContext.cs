@@ -6,8 +6,8 @@ namespace DataAccess;
 
 public class AppDbContext: DbContext
 {
-    public DbSet<Task> Tasks = null!;
-    public DbSet<Status> Statuses = null!;
+    public DbSet<Task> Tasks { get; set; }
+    public DbSet<Status> Statuses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

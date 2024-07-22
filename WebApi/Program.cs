@@ -1,6 +1,8 @@
 using System.Reflection;
 using Core.Actions.Task.Create;
 using DataAccess;
+using DataAccess.Repositories;
+using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +25,11 @@ var assemblies = new[]
     Assembly.GetAssembly(typeof(CreateTaskCommand)),
 };
 
-var dbConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(builder => builder.UseSqlServer(dbConnection));
+builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
 var app = builder.Build();

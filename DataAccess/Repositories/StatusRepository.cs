@@ -16,4 +16,9 @@ public class StatusRepository: IStatusRepository
     {
         return _dbContext.Statuses.ToList();
     }
+
+    public Status? GetById(int id)
+    {
+        return _dbContext.Statuses.SingleOrDefault(st => st.Id == id);
+    }
 }
