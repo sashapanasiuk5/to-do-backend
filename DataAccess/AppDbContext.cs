@@ -9,6 +9,12 @@ public class AppDbContext: DbContext
     public DbSet<Task> Tasks = null!;
     public DbSet<Status> Statuses = null!;
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(
+            "Persist Security Info=False;Trusted_Connection=True;TrustServerCertificate=True;Initial Catalog=ToDoListDB;Data Source=LAPTOP-373K3L6J\\SQLEXPRESS;");
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Task>()

@@ -1,6 +1,8 @@
 using System.Reflection;
 using Core.Actions.Task.Create;
+using DataAccess;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApi.Controllers;
@@ -21,6 +23,8 @@ var assemblies = new[]
     Assembly.GetAssembly(typeof(CreateTaskCommand)),
 };
 
+var dbConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(builder => builder.UseSqlServer(dbConnection));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
 var app = builder.Build();
