@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Core.Mapping;
+﻿using Core.DTO.Task;
+using Core.DtoConverters;
 using DataAccess.Repositories.Interfaces;
 using FluentResults;
 using MediatR;
@@ -12,22 +10,25 @@ public class CreateTaskCommandHandler: IRequestHandler<CreateTaskCommand, Result
 {
     private readonly IStatusRepository _statusRepository;
     private readonly ITaskRepository _taskRepository;
-    public CreateTaskCommandHandler(IStatusRepository statusRepository, ITaskRepository taskRepository)
+    private readonly IDtoConverter<CreateOrModifyTaskDto, Task> _taskDtoConverter;
+    public CreateTaskCommandHandler(
+        IStatusRepository statusRepository,
+        ITaskRepository taskRepository,
+        IDtoConverter<CreateOrModifyTaskDto, Task> taskDtoConverter)
     {
         _statusRepository = statusRepository;
         _taskRepository = taskRepository;
+        _taskDtoConverter = taskDtoConverter;
     }
     public async Task<Result<Unit>> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
-        Task task = request.dto.ToTask();
-        Status? status = _statusRepository.GetById(request.dto.StatusId);
-        if (status != null)
+        var convertResult = _taskDtoConverter.Convert(request.dto);
+        if(convertResult.IsSuccess)
         {
-            task.Status = status;
-            _taskRepository.Add(task);
+            _taskRepository.Add(convertResult.Value);
             _taskRepository.SaveChanges();
             return new Unit();
         }
-        return Result.Fail("Status is not found"); 
+        return Result.Fail(convertResult.Errors); 
     }
 }
