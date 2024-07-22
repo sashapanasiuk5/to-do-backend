@@ -1,0 +1,10 @@
+
+/Core/bin
+/Core/obj
+/DataAccess/bin
+/DataAccess/obj
+/WebApi/bin
+/WebApi/obj
+/WebApi/obj
+Core/obj/Debug/net7.0/Core.csproj.AssemblyReference.cache
+/.idea
