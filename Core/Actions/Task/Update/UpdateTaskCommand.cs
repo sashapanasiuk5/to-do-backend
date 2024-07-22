@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Core.Actions.Task.Update;
 
-public record UpdateTaskCommand(CreateOrModifyTaskDto dto): IRequest<Result<Unit>>;
+public record UpdateTaskCommand(int id, CreateOrModifyTaskDto dto): IRequest<Result<Unit>>;

@@ -1,7 +1,11 @@
+using Core.Actions.Task.Create;
 using Core.Actions.Task.GetAll;
+using Core.Actions.Task.Update;
+using Core.DTO.Task;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Task = DataAccess.Entities.Task;
 
 namespace WebApi.Controllers;
 
@@ -18,5 +22,18 @@ public class TaskController : BaseApiController
     public async Task<IActionResult> GetAllTasksAsync()
     {
         return HandleResult(await _mediator.Send(new GetAllTasksQuery()));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateOrModifyTaskDto dto)
+    {
+        return HandleResult(await _mediator.Send(new CreateTaskCommand(dto)));
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateOrModifyTaskDto dto)
+    {
+        return HandleResult(await _mediator.Send(new UpdateTaskCommand(id, dto)));
     }
 }
