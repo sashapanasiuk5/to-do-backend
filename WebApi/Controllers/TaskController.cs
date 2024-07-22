@@ -1,4 +1,5 @@
 using Core.Actions.Task.Create;
+using Core.Actions.Task.Delete;
 using Core.Actions.Task.GetAll;
 using Core.Actions.Task.Update;
 using Core.DTO.Task;
@@ -35,5 +36,12 @@ public class TaskController : BaseApiController
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CreateOrModifyTaskDto dto)
     {
         return HandleResult(await _mediator.Send(new UpdateTaskCommand(id, dto)));
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        return HandleResult(await _mediator.Send(new DeleteTaskCommand(id)));
     }
 }
