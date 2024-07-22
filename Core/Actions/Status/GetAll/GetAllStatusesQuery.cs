@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System.Collections.Generic;
+using FluentResults;
 using MediatR;
 
 namespace Core.Actions.Status.GetAll;
