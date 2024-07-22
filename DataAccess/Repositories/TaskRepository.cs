@@ -31,6 +31,11 @@ public class TaskRepository: ITaskRepository
         _dbContext.Tasks.Update(task);
     }
 
+    public void Delete(int taskId)
+    {
+        _dbContext.Tasks.Where(t => t.Id == taskId).ExecuteDelete();
+    }
+
     public void Delete(Task task)
     {
         _dbContext.Tasks.Remove(task);

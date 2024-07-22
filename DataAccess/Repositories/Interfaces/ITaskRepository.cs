@@ -12,5 +12,7 @@ public interface ITaskRepository
 
     void Delete(Task task);
 
+    void Delete(int taskId);
+
     void SaveChanges();
 }
