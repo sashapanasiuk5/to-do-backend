@@ -1,5 +1,8 @@
 using System.Reflection;
 using Core.Actions.Task.Create;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using WebApi.Controllers;
 using Task = DataAccess.Entities.Task;
 

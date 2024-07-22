@@ -1,4 +1,5 @@
-﻿using Core.Actions.Status.GetAll;
+﻿using System.Threading.Tasks;
+using Core.Actions.Status.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

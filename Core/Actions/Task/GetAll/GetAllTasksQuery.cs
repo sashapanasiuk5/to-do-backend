@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System.Collections.Generic;
+using FluentResults;
 using MediatR;
 using DataAccess.Entities;
 namespace Core.Actions.Task.GetAll;
