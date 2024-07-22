@@ -1,4 +1,5 @@
 using DataAccess.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Task = DataAccess.Entities.Task;
 namespace DataAccess.Repositories;
 
@@ -12,12 +13,12 @@ public class TaskRepository: ITaskRepository
     }
     public List<Task> GetAll()
     {
-        return _dbContext.Tasks.ToList();
+        return _dbContext.Tasks.Include(t => t.Status).ToList();
     }
 
     public Task? GetById(int id)
     {
-        return _dbContext.Tasks.SingleOrDefault(t => t.Id == id);
+        return _dbContext.Tasks.Include(t => t.Status).SingleOrDefault(t => t.Id == id);
     }
 
     public void Add(Task task)
