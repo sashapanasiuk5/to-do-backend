@@ -1,5 +1,7 @@
 using System.Reflection;
 using Core.Actions.Task.Create;
+using Core.DTO.Task;
+using Core.DtoConverters;
 using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
@@ -29,6 +31,8 @@ builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
+builder.Services.AddScoped<IDtoConverter<CreateOrModifyTaskDto, Task>, CreateOrModifyTaskDtoConverter>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
