@@ -1,7 +1,5 @@
 using System.Reflection;
 using Core.Actions.Task.Create;
-using Core.DTO.Task;
-using Core.DtoConverters;
 using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
@@ -21,19 +19,28 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "allowFrontedPolicy",
+        policy  =>
+        {
+            policy.WithOrigins("http://localhost:3000");
+            policy.AllowAnyHeader();
+        });
+});
+
 var assemblies = new[]
 {
     Assembly.GetAssembly(typeof(TaskController)),
     Assembly.GetAssembly(typeof(CreateTaskCommand)),
+    Assembly.GetAssembly(typeof(TaskRepository))
 };
 
 builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-
-builder.Services.AddScoped<IDtoConverter<CreateOrModifyTaskDto, Task>, CreateOrModifyTaskDtoConverter>();
-
+builder.Services.AddAutoMapper(assemblies);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
 var app = builder.Build();
@@ -46,6 +53,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("allowFrontedPolicy");
 
 app.UseAuthorization();
 
