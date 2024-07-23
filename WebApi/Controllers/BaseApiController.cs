@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using Core.DomainErrors;
+using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,24 @@ public class BaseApiController: ControllerBase
         if (result.IsSuccess)
         {
             if (result.Value is Unit)
-            {
                 return Ok(null);
-            }
-
+            
             return Ok(result.Value);
         }
-
-        return BadRequest(result.Reasons);
+        
+        IError error = result.Errors[0];
+        return HandleError(error);
     }
+
+    private ActionResult HandleError(IError error)
+    {
+        switch (error)
+        {
+            case NotFoundError:
+                return NotFound(error.Message);
+            default:
+                throw new Exception("Not expected error");
+        }
+    }
+    
 }

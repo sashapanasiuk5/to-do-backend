@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Core.Actions.Task.Create;
 
-public record CreateTaskCommand(CreateOrModifyTaskDto dto): IRequest<Result<Unit>>;
+public record CreateTaskCommand(CreateOrModifyTaskDto dto): IRequest<Result<DataAccess.Entities.Task>>;
