@@ -26,7 +26,9 @@ public class BaseApiController: ControllerBase
         switch (error)
         {
             case NotFoundError:
-                return NotFound(error.Message);
+                return NotFound(error);
+            case ValidationError:
+                return BadRequest(error);
             default:
                 throw new Exception("Not expected error");
         }

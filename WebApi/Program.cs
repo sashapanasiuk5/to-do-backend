@@ -1,9 +1,12 @@
 using System.Reflection;
 using Core;
 using Core.Actions.Task.Create;
+using Core.DomainRules.Validation;
+using Core.DTO.Task;
 using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
+using FluentValidation;
 using WebApi.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +40,7 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IValidator<CreateOrModifyTaskDto>, TaskValidator>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
