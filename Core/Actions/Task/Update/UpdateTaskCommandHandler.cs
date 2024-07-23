@@ -1,9 +1,4 @@
-﻿using System;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
-using Core.DTO.Task;
-using Core.DtoConverters;
+﻿using FluentResults;
 using DataAccess.Repositories.Interfaces;
 using MediatR;
 
@@ -12,26 +7,33 @@ using DataAccess.Entities;
 public class UpdateTaskCommandHandler: IRequestHandler<UpdateTaskCommand, Result<Unit>>
 {
     private readonly ITaskRepository _taskRepository;
-    private readonly IDtoConverter<CreateOrModifyTaskDto, Task> _taskDtoConverter;
+    private readonly IStatusRepository _statusRepository;
 
-    public UpdateTaskCommandHandler(
+    public UpdateTaskCommandHandler
+    (
         ITaskRepository taskRepository,
-        IDtoConverter<CreateOrModifyTaskDto, Task> taskDtoConverter)
+        IStatusRepository statusRepository
+    )
     {
+        _statusRepository = statusRepository;
         _taskRepository = taskRepository;
-        _taskDtoConverter = taskDtoConverter;
     }
     public async Task<Result<Unit>> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
     {
-        var convertResult = _taskDtoConverter.Convert(request.dto);
-        if(convertResult.IsSuccess)
-        {
-            Task task = convertResult.Value;
-            task.Id = request.id;
-            _taskRepository.Update(task);
-            _taskRepository.SaveChanges();
-            return new Unit();
-        }
-        return Result.Fail(convertResult.Errors);  
+        Status? status = _statusRepository.GetById(request.dto.StatusId);
+        if(status == null)
+            return Result.Fail("Status is not found");
+
+        Task? taskForUpdate = _taskRepository.GetById(request.id);
+        if(taskForUpdate == null)
+            return Result.Fail("Task is not found");
+
+        taskForUpdate.Title = request.dto.Title;
+        taskForUpdate.Description = request.dto.Description;
+        taskForUpdate.Priority = request.dto.Priority;
+        taskForUpdate.Status = status;
+        _taskRepository.Update(taskForUpdate);
+        _taskRepository.SaveChanges();
+        return new Unit();
     }
 }
