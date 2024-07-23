@@ -1,14 +1,10 @@
 using System.Reflection;
+using Core;
 using Core.Actions.Task.Create;
 using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using WebApi.Controllers;
-using Task = DataAccess.Entities.Task;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +36,8 @@ builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddAutoMapper(assemblies);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
 var app = builder.Build();

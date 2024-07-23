@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using Core.DomainErrors;
+using FluentResults;
 using DataAccess.Repositories.Interfaces;
 using MediatR;
 
@@ -22,11 +23,11 @@ public class UpdateTaskCommandHandler: IRequestHandler<UpdateTaskCommand, Result
     {
         Status? status = _statusRepository.GetById(request.dto.StatusId);
         if(status == null)
-            return Result.Fail("Status is not found");
+            return Result.Fail(new NotFoundError(typeof(Status),request.dto.StatusId));
 
         Task? taskForUpdate = _taskRepository.GetById(request.id);
         if(taskForUpdate == null)
-            return Result.Fail("Task is not found");
+            return Result.Fail(new NotFoundError(typeof(Task), request.id));
 
         taskForUpdate.Title = request.dto.Title;
         taskForUpdate.Description = request.dto.Description;

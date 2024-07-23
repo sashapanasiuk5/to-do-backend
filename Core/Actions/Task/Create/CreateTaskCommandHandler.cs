@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.DomainErrors;
 using DataAccess.Repositories.Interfaces;
 using FluentResults;
 using MediatR;
@@ -32,6 +33,6 @@ public class CreateTaskCommandHandler: IRequestHandler<CreateTaskCommand, Result
             _taskRepository.SaveChanges();
             return Result.Ok(task);
         }
-        return Result.Fail("Status is not found"); 
+        return Result.Fail(new NotFoundError(typeof(Status), request.dto.StatusId)); 
     }
 }
