@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("statuses")]
+[Route("statuses")]
 public class StatusController: BaseApiController
 {
     private IMediator _mediator;
