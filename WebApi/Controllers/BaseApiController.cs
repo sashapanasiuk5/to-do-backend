@@ -12,7 +12,7 @@ public class BaseApiController: ControllerBase
         if (result.IsSuccess)
         {
             if (result.Value is Unit)
-                return Ok(null);
+                return NoContent();
             
             return Ok(result.Value);
         }
