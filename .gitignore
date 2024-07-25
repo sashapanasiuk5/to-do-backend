@@ -10,3 +10,4 @@ Core/obj/Debug/net7.0/Core.csproj.AssemblyReference.cache
 /.idea
 WebApi/logs/log.txt
 WebApi/logs/log.txt
+/WebApi/logs
