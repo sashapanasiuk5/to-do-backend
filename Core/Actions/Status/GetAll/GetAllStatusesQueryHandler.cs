@@ -12,7 +12,7 @@ public class GetAllStatusesQueryHandler: IRequestHandler<GetAllStatusesQuery, Re
 {
     private readonly IStatusRepository _statusRepository;
 
-    public GetAllStatusesQueryHandler(IStatusRepository statusRepository)
+    public GetAllStatusesQueryHandler(IStatusRepository statusRepository, ILogger<GetAllStatusesQueryHandler> logger)
     {
         _statusRepository = statusRepository;
     }

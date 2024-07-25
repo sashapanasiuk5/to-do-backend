@@ -7,8 +7,10 @@ using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfaces;
 using FluentValidation;
+using Serilog;
 using WebApi.Controllers;
 using WebApi.Middleware;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +51,14 @@ builder.Services.AddScoped<IValidator<CreateOrModifyTaskDto>, TaskValidator>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies!));
 
+var rootPath = builder.Environment.ContentRootPath;
+var logpath = rootPath + "/logs/log.txt";
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File(logpath)
+    .CreateLogger();
+
+builder.Services.AddLogging(logBuilder => logBuilder.AddSerilog(logger, true));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
