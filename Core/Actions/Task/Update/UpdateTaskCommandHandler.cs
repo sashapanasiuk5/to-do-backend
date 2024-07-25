@@ -12,15 +12,19 @@ public class UpdateTaskCommandHandler: IRequestHandler<UpdateTaskCommand, Result
     private readonly ITaskRepository _taskRepository;
     private readonly IStatusRepository _statusRepository;
     private readonly IValidator<CreateOrModifyTaskDto> _taskDtoValidator;
+    private readonly ILogger<UpdateTaskCommandHandler> _logger;
     public UpdateTaskCommandHandler
     (
         ITaskRepository taskRepository,
         IStatusRepository statusRepository,
-        IValidator<CreateOrModifyTaskDto> taskDtoValidator)
+        IValidator<CreateOrModifyTaskDto> taskDtoValidator,
+        ILogger<UpdateTaskCommandHandler> logger
+        )
     {
         _statusRepository = statusRepository;
         _taskRepository = taskRepository;
         _taskDtoValidator = taskDtoValidator;
+        _logger = logger;
     }
     public async Task<Result<Unit>> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
     {
@@ -42,6 +46,7 @@ public class UpdateTaskCommandHandler: IRequestHandler<UpdateTaskCommand, Result
         taskForUpdate.Status = status;
         _taskRepository.Update(taskForUpdate);
         _taskRepository.SaveChanges();
+        _logger.LogInformation($"Task with id {request.id} was updated");
         return new Unit();
     }
 }

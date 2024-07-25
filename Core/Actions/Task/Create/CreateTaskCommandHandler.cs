@@ -14,18 +14,21 @@ public class CreateTaskCommandHandler: IRequestHandler<CreateTaskCommand, Result
     private readonly IStatusRepository _statusRepository;
     private readonly IMapper _mapper;
     private readonly IValidator<CreateOrModifyTaskDto> _taskDtoValidator;
+    private readonly ILogger<CreateTaskCommandHandler> _logger;
     public CreateTaskCommandHandler
     (
         ITaskRepository taskRepository,
         IStatusRepository statusRepository,
         IMapper mapper,
-        IValidator<CreateOrModifyTaskDto> taskDtoValidator
-            )
+        IValidator<CreateOrModifyTaskDto> taskDtoValidator,
+        ILogger<CreateTaskCommandHandler> logger
+    )
     {
         _statusRepository = statusRepository;
         _taskRepository = taskRepository;
         _mapper = mapper;
         _taskDtoValidator = taskDtoValidator;
+        _logger = logger;
     }
     public async Task<Result<Task>> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
@@ -40,6 +43,8 @@ public class CreateTaskCommandHandler: IRequestHandler<CreateTaskCommand, Result
             task.Status = status;
             _taskRepository.Add(task);
             _taskRepository.SaveChanges();
+            
+            _logger.LogInformation($"Task with id {task.Id} was created");
             return Result.Ok(task);
         }
         return Result.Fail(new NotFoundError(typeof(Status), request.dto.StatusId)); 
